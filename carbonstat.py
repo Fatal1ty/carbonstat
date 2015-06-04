@@ -151,7 +151,6 @@ class CarbonStat(object):
         if self.ns:
             header = '{}.{}'.format(self.ns, header)
         packet = header + ''.join([str(m) for m in metrics.values()])
-        print(packet)
         try:
             self.socket.sendto(packet, (self.host, self.port))
         except SocketEror:
