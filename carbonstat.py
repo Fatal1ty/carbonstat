@@ -157,7 +157,7 @@ class CarbonStat(object):
             self.metrics.update(metrics)
 
 
-host = os.environ.get('CARBON_HOST', '127.0.0.0.1')
+host = os.environ.get('CARBON_HOST')
 port = int(os.environ.get('CARBON_PORT', '2003'))
 if host:
     stat = CarbonStat(host=host, port=port, namespace='ns')
