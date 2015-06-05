@@ -175,9 +175,6 @@ class CarbonStat(object):
             self.socket = None
 
 
-host = os.environ.get('CARBON_HOST')
+host = os.environ.get('CARBON_HOST', '127.0.0.1')
 port = int(os.environ.get('CARBON_PORT', '2003'))
-if host:
-    stat = CarbonStat(host=host, port=port, namespace='ns')
-else:
-    stat = None
+stat = CarbonStat(host=host, port=port, namespace='')
