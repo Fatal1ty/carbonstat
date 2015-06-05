@@ -114,7 +114,7 @@ class CarbonStat(object):
         stat['simple'].add(1)  # increment simple metric value
     print(stat['simple'].simple_value)  # 10
 
-    with stat['extended'] as timer:
+    with stat.timer('extended') as timer:
         for i in range(10):
             timer.start()
             bar(i)
@@ -124,9 +124,9 @@ class CarbonStat(object):
     #      stat['extended'].min is min of [t(bar(0)), ..., t(bar(9))]
     #      stat['extended'].max is max of [t(bar(0)), ..., t(bar(9))]
 
-    with stat['extended'] as timer:
+    with stat.timer('extended'):
         bar(10)
-        timer.stop()  # starting time is time when we entered in context manager
+        # Stopping the timer with exit.
 
     stat.send()  # send packet to Carbon
     """
