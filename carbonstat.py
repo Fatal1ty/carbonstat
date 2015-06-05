@@ -34,7 +34,7 @@ class Metric(object):
     print(metric.simple_value)  # 10
 
     extended_metric = Metric('bar')
-    with extended_metric as timer:
+    with extended_metric.timer() as timer:
         for i in range(10):
             timer.start()
             bar(i)
@@ -44,9 +44,9 @@ class Metric(object):
     #      metric.min is min of [t(bar(0)), ..., t(bar(9))]
     #      metric.max is max of [t(bar(0)), ..., t(bar(9))]
 
-    with extended_metric as timer:
+    with extended_metric.timer() as timer:
         bar(10)
-        timer.stop()  # starting time is time when we entered in context manager
+        # stopping the timer with exit
     """
     def __init__(self, name):
         self.name = name
@@ -55,14 +55,6 @@ class Metric(object):
         self.min, self.max = float('inf'), float('-inf')
         self.sum, self.len = 0, 0
         self.timestamp = None
-
-    def __enter__(self):
-        """Начало измерения времени метрики"""
-        return MetricTimer(self)
-
-    def __exit__(self, *args, **kwargs):
-        """Окончание измерения времени метрики"""
-        pass
 
     def add(self, value):
         """Add a value to a simple value stored in metric"""
