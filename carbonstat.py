@@ -12,17 +12,23 @@ class MetricTimer(object):
         self.start()
 
     def start(self):
-        self.started_at = time.time()
+        self.running = True
+        self.start_time = time.time()
 
     def stop(self):
-        self.metric.add_ex(time.time() - self.started_at)
+        if self.running:
+            self.metric.add_ex(time.time() - self.start_time)
+            self.running = False
+        else:
+            raise Exception('Timer is not running')
 
     def __enter__(self):
         self.start()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.stop()
+        if self.running:
+            self.stop()
 
 
 class Metric(object):
