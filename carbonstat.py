@@ -2,6 +2,7 @@
 
 import os
 import time
+import logging
 from socket import socket, AF_INET, SOCK_DGRAM, error as SocketEror
 
 
@@ -136,13 +137,19 @@ class CarbonStat(object):
         self.port = port
         self.ns = namespace
         self.metrics = {}
-        self.socket = socket(AF_INET, SOCK_DGRAM)
+        self.socket = None
 
     def __getitem__(self, name):
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
 
     def send(self):
         """Посылает метрики на хост группой и очищает группу"""
+        if not self.socket:
+            try:
+                self.socket = socket(AF_INET, SOCK_DGRAM)
+            except SocketEror as e:
+                logging.warning('Could not open socket: %s', str(e))
+                return
         self.heartbeat += 1
         self.heartbeat %= 2 ** 32
         heartbeat = (self.heartbeat - 1) % 2 ** 32
@@ -153,8 +160,10 @@ class CarbonStat(object):
         packet = header + ''.join([str(m) for m in metrics.values()])
         try:
             self.socket.sendto(packet, (self.host, self.port))
-        except SocketEror:
+        except SocketEror as e:
+            logging.error('Could not send packet: %s', str(e))
             self.metrics.update(metrics)
+            self.socket = None
 
 
 host = os.environ.get('CARBON_HOST')
