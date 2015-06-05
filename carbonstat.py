@@ -7,9 +7,9 @@ from socket import socket, AF_INET, SOCK_DGRAM, error as SocketEror
 
 
 class MetricTimer(object):
-    def __init__(self, metric, started_at):
+    def __init__(self, metric):
         self.metric = metric
-        self.started_at = started_at
+        self.start()
 
     def start(self):
         self.started_at = time.time()
@@ -51,7 +51,7 @@ class Metric(object):
 
     def __enter__(self):
         """Начало измерения времени метрики"""
-        return MetricTimer(self, time.time())
+        return MetricTimer(self)
 
     def __exit__(self, *args, **kwargs):
         """Окончание измерения времени метрики"""
