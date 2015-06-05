@@ -17,6 +17,13 @@ class MetricTimer(object):
     def stop(self):
         self.metric.add_ex(time.time() - self.started_at)
 
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.stop()
+
 
 class Metric(object):
     """
@@ -58,7 +65,7 @@ class Metric(object):
         pass
 
     def add(self, value):
-        """Добавление value к существующему значению в метрике"""
+        """Add a value to a simple value stored in metric"""
         try:
             self.simple_value += value
         except TypeError:
@@ -67,9 +74,9 @@ class Metric(object):
 
     def add_ex(self, value):
         """
-        Расширенное добавление значения к метрике
+        Add a value to "set" of values stored in metric
 
-        Для добавляемых таким образом значений можно получить min, avg, max.
+        For this "set" of values we can calculate min., max., avg. values.
         """
         self.sum += value
         self.len += 1
@@ -83,6 +90,9 @@ class Metric(object):
     def avg(self):
         return self.sum / float(self.len)
 
+    def timer(self):
+        return MetricTimer(self)
+
 
 class CarbonMetric(Metric):
     def __init__(self, name, namespace):
@@ -93,14 +103,13 @@ class CarbonMetric(Metric):
     def __str__(self):
         name = '%s.%s' % (self.ns, self.name) if self.ns else self.name
         ret = ''
-        if self.value is not None:
+        if self.simple_value is not None:
             ret += '%s %s %f\n' % (name, self.simple_value,
                                    self.simple_timestamp)
         if self.len:
-            ret += '\n'.join(['%s.%s %s %s'.format(name,
-                                                   value_name,
-                                                   getattr(self, value_name),
-                                                   self.timestamp)
+            ret += '\n'.join(['%s.%s %s %s' % (name, value_name,
+                                               getattr(self, value_name),
+                                               self.timestamp)
                               for value_name in ['min', 'avg', 'max']]) + '\n'
         return ret
 
@@ -126,12 +135,11 @@ class CarbonStat(object):
 
     with stat.timer('extended'):
         bar(10)
-        # Stopping the timer with exit.
+        # stopping the timer with exit
 
     stat.send()  # send packet to Carbon
     """
     def __init__(self, host='127.0.0.1', port=2003, namespace=''):
-        """Открывает UDP сокет на удаленный хост и ждет"""
         self.heartbeat = 0
         self.host = host
         self.port = port
@@ -142,8 +150,11 @@ class CarbonStat(object):
     def __getitem__(self, name):
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
 
+    def timer(self, name):
+        return self[name].timer()
+
     def send(self):
-        """Посылает метрики на хост группой и очищает группу"""
+        """Send group of collected metrics and clear the group"""
         if not self.socket:
             try:
                 self.socket = socket(AF_INET, SOCK_DGRAM)
