@@ -93,11 +93,11 @@ class CarbonMetric(Metric):
     def __str__(self):
         name = '%s.%s' % (self.ns, self.name) if self.ns else self.name
         ret = ''
-        if self.simple_value is not None:
-            ret += '{} {} {}\n'.format(name, self.simple_value,
-                                       self.simple_timestamp)
+        if self.value is not None:
+            ret += '%s %s %f\n' % (name, self.simple_value,
+                                   self.simple_timestamp)
         if self.len:
-            ret += '\n'.join(['{}.{} {} {}'.format(name,
+            ret += '\n'.join(['%s.%s %s %s'.format(name,
                                                    value_name,
                                                    getattr(self, value_name),
                                                    self.timestamp)
