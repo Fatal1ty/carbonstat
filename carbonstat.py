@@ -95,7 +95,7 @@ class CarbonMetric(Metric):
         ret = ''
         if self.simple_value is not None:
             ret += '{} {} {}\n'.format(name, self.simple_value,
-                                     self.simple_timestamp)
+                                       self.simple_timestamp)
         if self.len:
             ret += '\n'.join(['{}.{} {} {}'.format(name,
                                                    value_name,
