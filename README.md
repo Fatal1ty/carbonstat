@@ -19,7 +19,7 @@ Basic usage
 You can just import `carbonstat.stat` instance and play with it:
 
 
-```
+```python
     from carbonstat import stat
 
     def foo():
@@ -37,7 +37,7 @@ All packages are sent via udp to *127.0.0.1:2003* by default. You can change def
 
 You can combine multiple metrics in one `CarbonStat` instance too:
 
-```
+```python
     def foo():
         print 'Hello from foo!'
 
@@ -59,7 +59,7 @@ Advanced usage
 
 You can measure execution time of code blocks with convenient context manager:
 
-```
+```python
     stat = CarbonStat(host=192.168.0.1, port=2003)
 
     def foo(sec):
@@ -85,7 +85,7 @@ You can measure execution time of code blocks with convenient context manager:
 
 Or you can do it simpler:
 
-```
+```python
     def foo(sec):
         sleep(sec)
         print 'Hello after %d seconds!' % sec
@@ -100,7 +100,7 @@ Or you can do it simpler:
 
 You can even decorate your function and measure it's execution time while calling it:
 
-```
+```python
     @stat.wrapper('foo.time')
     def foo(sec):
         sleep(sec)
