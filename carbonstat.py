@@ -159,9 +159,9 @@ class CarbonStat(object):
             except SocketEror as e:
                 logging.warning('Could not open socket: %s', str(e))
                 return
+        heartbeat = self.heartbeat
         self.heartbeat += 1
         self.heartbeat %= 2 ** 32
-        heartbeat = (self.heartbeat - 1) % 2 ** 32
         metrics, self.metrics = self.metrics, {}
         header = 'heartbeat {} {}\n'.format(heartbeat, time.time())
         if self.ns:
