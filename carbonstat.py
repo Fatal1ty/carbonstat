@@ -169,6 +169,26 @@ class CarbonStat(object):
         """
         return self[metric_name].timer()
 
+    def wrapper(self, metric_name):
+        """
+        Decorator for measuring execution time of your function
+
+        @stat.wrapper('foo')
+        def foo(a):
+            sleep(a)
+
+        for a in range(10):
+            foo(a)
+
+        stat.send()  # send info about execution of `foo` function 10 times
+        """
+        def inner(function):
+            def wrapped(*args, **kwargs):
+                with self.timer(metric_name):
+                    return function(*args, **kwargs)
+            return wrapped
+        return inner
+
     def send(self):
         """Send group of collected metrics and clear the group"""
         if not self.socket:
