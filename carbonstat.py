@@ -12,10 +12,12 @@ class MetricTimer(object):
         self.start()
 
     def start(self):
+        """Start measuring execution time"""
         self.running = True
         self.start_time = time.time()
 
     def stop(self):
+        """Stop timer and save execution time"""
         if self.running:
             self.metric.add_ex(time.time() - self.start_time)
             self.running = False
@@ -89,6 +91,7 @@ class Metric(object):
         return self.sum / float(self.len)
 
     def timer(self):
+        """Get timer for measuring execution time inside context manager"""
         return MetricTimer(self)
 
 
@@ -149,10 +152,12 @@ class CarbonStat(object):
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
 
     def set_namespace(self, namespace):
+        """Set new namespace"""
         self.ns = namespace
 
-    def timer(self, name):
-        return self[name].timer()
+    def timer(self, metric_name):
+        """Get timer for measuring execution time inside context manager"""
+        return self[metric_name].timer()
 
     def send(self):
         """Send group of collected metrics and clear the group"""
