@@ -156,7 +156,17 @@ class CarbonStat(object):
         self.ns = namespace
 
     def timer(self, metric_name):
-        """Get timer for measuring execution time inside context manager"""
+        """
+        Get timer for measuring execution time inside context manager
+
+        with stat.timer('foo') as timer:
+            for a in range(10):
+                timer.start()
+                # some your code
+                timer.stop()
+
+        stat.send()  # send info about execution of your code 10 times
+        """
         return self[metric_name].timer()
 
     def send(self):
