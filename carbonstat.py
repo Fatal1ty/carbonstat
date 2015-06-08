@@ -149,6 +149,7 @@ class CarbonStat(object):
         self.socket = None
 
     def __getitem__(self, name):
+        """Get metric object with name `name`"""
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
 
     def set_namespace(self, namespace):
