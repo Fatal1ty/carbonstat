@@ -148,6 +148,9 @@ class CarbonStat(object):
     def __getitem__(self, name):
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
 
+    def set_namespace(self, namespace):
+        self.ns = namespace
+
     def timer(self, name):
         return self[name].timer()
 
