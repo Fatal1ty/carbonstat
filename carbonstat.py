@@ -3,6 +3,7 @@
 import os
 import time
 import logging
+from functools import wraps
 from socket import socket, AF_INET, SOCK_DGRAM, error as SocketEror
 
 
@@ -184,6 +185,7 @@ class CarbonStat(object):
         stat.send()  # send info about execution of `foo` function 10 times
         """
         def inner(function):
+            @wraps(function)
             def wrapped(*args, **kwargs):
                 with self.timer(metric_name):
                     return function(*args, **kwargs)
