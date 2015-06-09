@@ -171,11 +171,11 @@ class CarbonStat(object):
         """
         return self[metric_name].timer()
 
-    def wrapper(self, metric_name):
+    def timeit(self, metric_name):
         """
         Decorator for measuring execution time of your function
 
-        @stat.wrapper('foo')
+        @stat.timeit('foo')
         def foo(a):
             sleep(a)
 
