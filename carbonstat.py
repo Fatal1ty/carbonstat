@@ -67,6 +67,7 @@ class Metric(object):
         self.min, self.max = float('inf'), float('-inf')
         self.sum, self.len = 0, 0
         self.timestamp = None
+        self.accumulate = False
 
     def add(self, value):
         """Add a value to a simple value stored in metric"""
@@ -226,7 +227,14 @@ class CarbonStat(object):
             self.__sending = True
 
         metrics, self.metrics = self.metrics, {}
-        packet = self.make_header() + ''.join([str(m) for m in metrics.values()])
+
+        packet = self.make_header()
+        for metric in metrics.values():
+            if metric.accumulate:
+                self[metric.name].add(metric.simple_value)
+                self[metric.name].accumulate = True
+            packet += str(metric)
+
         try:
             self.socket.sendto(packet, (self.host, self.port))
         except SocketEror as e:

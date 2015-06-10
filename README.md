@@ -111,3 +111,20 @@ You can even decorate your function and measure it's execution time while callin
 
     stat.send()  # send packet like above
 ```
+
+Extra
+-----
+
+In some cases you may need to save the value of any metric after sending the packet to Carbon. You can do it by setting `accumulate` attribute to `True`:
+
+```python
+    stat = CarbonStat(host=192.168.0.1, port=2003)
+
+    stat['persistent'].accumulate = True
+
+    stat['persistent'].add(1)
+    stat.send()  # send packet with `persistent` = 1
+    stat.send()  # send packet with `persistent` = 1
+    stat['persistent'].add(2)
+    stat.send()  # send packet with `persistent` = 3
+```
