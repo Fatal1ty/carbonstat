@@ -148,6 +148,7 @@ class CarbonStat(object):
         self.ns = namespace
         self.metrics = {}
         self.socket = None
+        self.__sending = False
 
     def __getitem__(self, name):
         """Get metric object with name `name`"""
@@ -194,6 +195,10 @@ class CarbonStat(object):
 
     def send(self):
         """Send group of collected metrics and clear the group"""
+        if self.__sending:
+            return
+        else:
+            self.__sending = True
         if not self.socket:
             try:
                 self.socket = socket(AF_INET, SOCK_DGRAM)
