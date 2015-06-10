@@ -233,6 +233,8 @@ class CarbonStat(object):
             log.debug('Packet:\n%s', packet)
             log.error('Could not send packet to Carbon %s: %s', self.host, str(e))
             self.metrics.update(metrics)
+        finally:
+            self.__sending = False
 
 
 host = os.environ.get('CARBON_HOST', '127.0.0.1')
