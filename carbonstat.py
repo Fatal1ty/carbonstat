@@ -146,13 +146,24 @@ class CarbonStat(object):
         self.port = port
         self.ns = namespace
         self.metrics = {}
-        self.socket = None
+        self.__socket = None
         self.__heartbeat = -1
         self.__sending = False
 
     def __getitem__(self, name):
         """Get metric object with name `name`"""
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
+
+    @property
+    def socket(self):
+        if not self.__socket:
+            try:
+                self.__socket = socket(AF_INET, SOCK_DGRAM)
+            except SocketEror as e:
+                logging.error('Could not create socket: %s', str(e))
+                raise
+
+        return self.__socket
 
     @property
     def heartbeat(self):
@@ -210,20 +221,14 @@ class CarbonStat(object):
             return
         else:
             self.__sending = True
-        if not self.socket:
-            try:
-                self.socket = socket(AF_INET, SOCK_DGRAM)
-            except SocketEror as e:
-                logging.warning('Could not open socket: %s', str(e))
-                return
+
         metrics, self.metrics = self.metrics, {}
         packet = self.make_header() + ''.join([str(m) for m in metrics.values()])
         try:
             self.socket.sendto(packet, (self.host, self.port))
         except SocketEror as e:
-            logging.error('Could not send packet: %s', str(e))
-            self.metrics.update(metrics)
-            self.socket = None
+            logging.error('Could not send packet to Carbon %s: %s', self.host, str(e))
+            self.metrics.update(metrics)g
 
 
 host = os.environ.get('CARBON_HOST', '127.0.0.1')
