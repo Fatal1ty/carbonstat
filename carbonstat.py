@@ -7,6 +7,9 @@ from functools import wraps
 from socket import socket, AF_INET, SOCK_DGRAM, error as SocketEror
 
 
+log = logging.getLogger('carbonstat')
+
+
 class MetricTimer(object):
     def __init__(self, metric):
         self.metric = metric
@@ -160,7 +163,7 @@ class CarbonStat(object):
             try:
                 self.__socket = socket(AF_INET, SOCK_DGRAM)
             except SocketEror as e:
-                logging.error('Could not create socket: %s', str(e))
+                log.error('Could not create socket: %s', str(e))
                 raise
 
         return self.__socket
@@ -227,8 +230,9 @@ class CarbonStat(object):
         try:
             self.socket.sendto(packet, (self.host, self.port))
         except SocketEror as e:
-            logging.error('Could not send packet to Carbon %s: %s', self.host, str(e))
-            self.metrics.update(metrics)g
+            log.debug('Packet:\n%s', packet)
+            log.error('Could not send packet to Carbon %s: %s', self.host, str(e))
+            self.metrics.update(metrics)
 
 
 host = os.environ.get('CARBON_HOST', '127.0.0.1')
