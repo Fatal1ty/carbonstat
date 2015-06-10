@@ -142,7 +142,6 @@ class CarbonStat(object):
     stat.send()  # send packet to Carbon
     """
     def __init__(self, host='127.0.0.1', port=2003, namespace=''):
-        self.heartbeat = 0
         self.host = host
         self.port = port
         self.ns = namespace
