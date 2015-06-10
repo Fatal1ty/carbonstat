@@ -101,7 +101,7 @@ Or you can do it simpler:
 You can even decorate your function and measure it's execution time while calling it:
 
 ```python
-    @stat.wrapper('foo.time')
+    @stat.timeit('foo.time')
     def foo(sec):
         sleep(sec)
         print 'Hello after %d seconds!' % sec
