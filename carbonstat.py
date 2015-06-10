@@ -7,7 +7,7 @@ from functools import wraps
 from socket import socket, AF_INET, SOCK_DGRAM, error as SocketEror
 
 
-log = logging.getLogger('carbonstat')
+log = logging.getLogger(name='carbonstat')
 
 
 class MetricTimer(object):
@@ -247,4 +247,5 @@ class CarbonStat(object):
 
 host = os.environ.get('CARBON_HOST', '127.0.0.1')
 port = int(os.environ.get('CARBON_PORT', '2003'))
-stat = CarbonStat(host=host, port=port, namespace='')
+namespace = os.environ.get('CARBON_NAMESPACE', 'carbonstat')
+stat = CarbonStat(host=host, port=port, namespace=namespace)
