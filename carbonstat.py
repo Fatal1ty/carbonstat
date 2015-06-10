@@ -148,11 +148,17 @@ class CarbonStat(object):
         self.ns = namespace
         self.metrics = {}
         self.socket = None
+        self.__heartbeat = -1
         self.__sending = False
 
     def __getitem__(self, name):
         """Get metric object with name `name`"""
         return self.metrics.setdefault(name, CarbonMetric(name, self.ns))
+
+    @property
+    def heartbeat(self):
+        self.__heartbeat = (self.__heartbeat + 1) % 2 ** 32
+        return self.__heartbeat
 
     def set_namespace(self, namespace):
         """Set new namespace"""
@@ -185,13 +191,19 @@ class CarbonStat(object):
 
         stat.send()  # send info about execution of `foo` function 10 times
         """
-        def inner(function):
+        def decorator(function):
             @wraps(function)
             def wrapped(*args, **kwargs):
                 with self.timer(metric_name):
                     return function(*args, **kwargs)
             return wrapped
-        return inner
+        return decorator
+
+    def make_header(self):
+        header = 'heartbeat {} {}\n'.format(self.heartbeat, time.time())
+        if self.ns:
+            header = '{}.{}'.format(self.ns, header)
+        return header
 
     def send(self):
         """Send group of collected metrics and clear the group"""
@@ -205,14 +217,8 @@ class CarbonStat(object):
             except SocketEror as e:
                 logging.warning('Could not open socket: %s', str(e))
                 return
-        heartbeat = self.heartbeat
-        self.heartbeat += 1
-        self.heartbeat %= 2 ** 32
         metrics, self.metrics = self.metrics, {}
-        header = 'heartbeat {} {}\n'.format(heartbeat, time.time())
-        if self.ns:
-            header = '{}.{}'.format(self.ns, header)
-        packet = header + ''.join([str(m) for m in metrics.values()])
+        packet = self.make_header() + ''.join([str(m) for m in metrics.values()])
         try:
             self.socket.sendto(packet, (self.host, self.port))
         except SocketEror as e:
