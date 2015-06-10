@@ -30,10 +30,10 @@ You can just import `carbonstat.stat` instance and play with it:
 
     stat['foo.count'].add(2)  # save `foo.count` metric as execution counter
 
-    stat.send()  # send package to Carbon with `foo.count` metric value
+    stat.send()  # send packet to Carbon with `foo.count` metric value
 ```
 
-All packages are sent via udp to *127.0.0.1:2003* by default. You can change default destination address via environment variables `$CARBOH_HOST` and `$CARBON_PORT`.
+All packets are sent via udp to *127.0.0.1:2003* by default. You can change default destination address via environment variables `$CARBOH_HOST` and `$CARBON_PORT`.
 
 You can combine multiple metrics in one `CarbonStat` instance too:
 
@@ -51,7 +51,7 @@ You can combine multiple metrics in one `CarbonStat` instance too:
     stat['foo.count'].add(2)
     stat['bar.count'].add(1)
 
-    stat.send()  # send package to Carbon with two metrics
+    stat.send()  # send packet to Carbon with two metrics
 ```
 
 Advanced usage
@@ -75,7 +75,7 @@ You can measure execution time of code blocks with convenient context manager:
         foo(5)
         timer.stop()
 
-    stat.send()  # send package:
+    stat.send()  # send packet:
     #               heartbeat    0 timespamp
     #               foo.time.min 3 timestamp
     #               foo.time.avg 4 timestamp
@@ -95,7 +95,7 @@ Or you can do it simpler:
     with stat.timer('foo.time'):
         foo(5)
 
-    stat.send()  # send package like above
+    stat.send()  # send packet like above
 ```
 
 You can even decorate your function and measure it's execution time while calling it:
@@ -109,5 +109,5 @@ You can even decorate your function and measure it's execution time while callin
     foo(3)
     foo(5)
 
-    stat.send()  # send package like above
+    stat.send()  # send packet like above
 ```
