@@ -68,6 +68,7 @@ class Metric(object):
         self.sum, self.len = 0, 0
         self.timestamp = None
         self.accumulate = False
+        self.extended = False
 
     def add(self, value):
         """Add a value to a simple value stored in metric"""
@@ -97,6 +98,7 @@ class Metric(object):
 
     def timer(self):
         """Get timer for measuring execution time inside context manager"""
+        self.extended = True
         return MetricTimer(self)
 
 
@@ -233,6 +235,8 @@ class CarbonStat(object):
             if metric.accumulate:
                 self[metric.name].add(metric.simple_value)
                 self[metric.name].accumulate = True
+            if metric.extended:
+                self.metrics[metric.name] = metric
             packet += str(metric)
 
         try:
