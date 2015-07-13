@@ -78,6 +78,19 @@ class Metric(object):
             self.simple_value = value
         self.simple_timestamp = time.time()
 
+    def incr(self, amount=1):
+        """Increment a simple value stored in metric"""
+        self.add(amount)
+
+    def decr(self, amount=1):
+        """Decrement a simple value stored in metric"""
+        self.add(-amount)
+
+    def set(self, value):
+        """Set a value to a simple value stored in metric"""
+        self.simple_value = value
+        self.simple_timestamp = time.time()
+
     def add_ex(self, value):
         """
         Add a value to "set" of values stored in metric
