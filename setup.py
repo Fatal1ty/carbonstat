@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='carbonstat',
-      version='0.4.2',
+      version='0.4.3',
       description='Metric collection agent for Carbon',
       license='GPL',
       author='Alexander Tikhonov',

@@ -246,10 +246,11 @@ class CarbonStat(object):
         packet = self.make_header()
         for metric in metrics.values():
             if metric.accumulate:
-                self[metric.name].add(metric.simple_value)
+                if not metric.extended:
+                    self[metric.name].add(metric.simple_value)
+                else:
+                    self.metrics[metric.name] = metric
                 self[metric.name].accumulate = True
-            if metric.extended:
-                self.metrics[metric.name] = metric
             packet += str(metric)
 
         try:
