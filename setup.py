@@ -3,9 +3,9 @@
 from distutils.core import setup
 
 setup(name='carbonstat',
-      version='0.4.3',
+      version='0.4.4',
       description='Metric collection agent for Carbon',
-      license='GPL',
+      license='MIT',
       author='Alexander Tikhonov',
       author_email='random.gauss@gmail.com',
       url='https://github.com/Fatal1ty/carbonstat',
