@@ -1,7 +1,9 @@
 carbonstat
 ==========
-[![PyPI](https://img.shields.io/pypi/dm/carbonstat.svg)](https://pypi.python.org/pypi/carbonstat)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/Fatal1ty/carbonstat/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/dm/carbonstat.svg?maxAge=2592000)](https://pypi.python.org/pypi/carbonstat)
+[![PyPI](https://img.shields.io/pypi/v/carbonstat.svg?maxAge=2592000)](https://pypi.python.org/pypi/carbonstat)
+[![PyPI](https://img.shields.io/pypi/pyversions/carbonstat.svg?maxAge=2592000)](https://pypi.python.org/pypi/carbonstat)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000)](https://raw.githubusercontent.com/Fatal1ty/carbonstat/master/LICENSE)
 
 Metrics collection agent for [Carbon](https://github.com/graphite-project/carbon). It allow you to collect some metrics about your code and measure execution time.
 

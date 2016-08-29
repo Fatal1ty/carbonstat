@@ -2,6 +2,8 @@ carbonstat
 ==========
 
 | |PyPI|
+| |PyPI|
+| |PyPI|
 | |GitHub license|
 
 Metrics collection agent for `Carbon`_. It allow you to collect some
@@ -124,21 +126,15 @@ In some cases you may need to save the value of any metric after sending
 the packet to Carbon. You can do it by setting ``accumulate`` attribute
 to ``True``:
 
-| \`\`\`python
-| stat = CarbonStat(host=192.168.0.1, port=2003)
-
-::
-
-    stat['persistent'].accumulate = True
-
-    stat['persistent'].add(1)
-    stat.send()  # send packet with `persistent` = 1
-    stat.send()  # send packet with `persistent` = 1
-    stat['persistent
+\`\`\`
 
 .. _Carbon: https://github.com/graphite-project/carbon
 
-.. |PyPI| image:: https://img.shields.io/pypi/dm/carbonstat.svg
+.. |PyPI| image:: https://img.shields.io/pypi/dm/carbonstat.svg?maxAge=2592000
    :target: https://pypi.python.org/pypi/carbonstat
-.. |GitHub license| image:: https://img.shields.io/badge/license-MIT-blue.svg
+.. |PyPI| image:: https://img.shields.io/pypi/v/carbonstat.svg?maxAge=2592000
+   :target: https://pypi.python.org/pypi/carbonstat
+.. |PyPI| image:: https://img.shields.io/pypi/pyversions/carbonstat.svg?maxAge=2592000
+   :target: https://pypi.python.org/pypi/carbonstat
+.. |GitHub license| image:: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
    :target: https://raw.githubusercontent.com/Fatal1ty/carbonstat/master/LICENSE
