@@ -1,16 +1,13 @@
 carbonstat
 ==========
 
-.. image:: https://img.shields.io/pypi/dm/carbonstat.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/v/carbonstat.svg
    :target: https://pypi.python.org/pypi/carbonstat
 
-.. image:: https://img.shields.io/pypi/v/carbonstat.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/pyversions/carbonstat.svg
    :target: https://pypi.python.org/pypi/carbonstat
 
-.. image:: https://img.shields.io/pypi/pyversions/carbonstat.svg?maxAge=2592000
-   :target: https://pypi.python.org/pypi/carbonstat
-
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://raw.githubusercontent.com/Fatal1ty/carbonstat/master/LICENSE
 
 Metrics collection agent for `Carbon`_. It allow you to collect some
