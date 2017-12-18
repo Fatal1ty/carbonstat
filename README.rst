@@ -130,6 +130,16 @@ In some cases you may need to save the value of any metric after sending
 the packet to Carbon. You can do it by setting ``accumulate`` attribute
 to ``True``:
 
-\`\`\`
+.. code:: python
+
+        stat = CarbonStat(host=192.168.0.1, port=2003)
+
+        stat['persistent'].accumulate = True
+
+        stat['persistent'].add(1)
+        stat.send()  # send packet with `persistent` = 1
+        stat.send()  # send packet with `persistent` = 1
+        stat['persistent'].add(2)
+        stat.send()  # send packet with `persistent` = 3
 
 .. _Carbon: https://github.com/graphite-project/carbon
